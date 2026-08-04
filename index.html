@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Circle: Barkada Album</title>
+  <!-- Google Fonts & FontAwesome for Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Gradient Shapes -->
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
+
+  <!-- Header Section -->
+  <header class="glass-header">
+    <div class="header-content">
+      <h1>Our Circle <span>of Friends</span> 📸</h1>
+      <p>Bawat pictures, may kwento. Ang ating digital album.</p>
+    </div>
+    <div class="upload-section" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+      <button class="upload-toggle-btn" onclick="toggleUploadModal()">
+        <i class="fas fa-plus-circle"></i> Mag-upload ng File
+      </button>
+      <button class="upload-toggle-btn camera-btn" onclick="openCameraModal()">
+        <i class="fas fa-camera"></i> Kumuha sa Camera
+      </button>
+    </div>
+  </header>
+
+  <!-- Category Filter Buttons -->
+  <div class="filter-container">
+    <button class="filter-btn active" onclick="filterGallery('all')">Lahat</button>
+    <button class="filter-btn" onclick="filterGallery('outings')"><i class="fas fa-map-marked-alt"></i> Outings</button>
+    <button class="filter-btn" onclick="filterGallery('hangouts')"><i class="fas fa-pizza-slice"></i> Hangouts</button>
+    <button class="filter-btn" onclick="filterGallery('school')"><i class="fas fa-graduation-cap"></i> School</button>
+  </div>
+
+  <!-- Photo Gallery Grid -->
+  <main class="gallery-container">
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Kusang lalabas dito ang mga larawan mula sa JavaScript -->
+    </div>
+  </main>
+
+  <!-- Upload File Modal (Popup Form) -->
+  <div id="upload-modal" class="modal" onclick="closeModalOutside(event)">
+    <div class="modal-content glass-card animate-popIn">
+      <span class="close-modal" onclick="toggleUploadModal()">&times;</span>
+      <h2><i class="fas fa-cloud-upload-alt"></i> Bagong Memory</h2>
+      <form id="upload-form" onsubmit="addPhotos(event)">
+        
+        <div class="file-upload-wrapper" data-text="Pumili ng mga Larawan">
+          <input type="file" id="photo-file" accept="image/*" multiple required onchange="updateFileName(this)">
+          <span id="file-name-display">I-click para mag-upload</span>
+        </div>
+
+        <input type="text" id="photo-title" placeholder="Pamagat (hal. Tagaytay Trip)" required>
+        <input type="text" id="photo-desc" placeholder="Maikling kwento o alaala..." required>
+
+        <div class="select-wrapper">
+          <select id="photo-category">
+            <option value="outings">🚗 Outings</option>
+            <option value="hangouts">☕ Hangouts</option>
+            <option value="school">🎓 School</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">I-post na sa Album yan!</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Live Camera Modal -->
+  <div id="camera-modal" class="modal" onclick="closeCameraOutside(event)">
+    <div class="modal-content glass-card animate-popIn">
+      <span class="close-modal" onclick="closeCameraModal()">&times;</span>
+      <h2><i class="fas fa-camera"></i> Live Camera</h2>
+
+      <!-- Camera Screen Preview -->
+      <div class="camera-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="camera-canvas" style="display:none;"></canvas>
+        <img id="captured-preview" style="display:none;" alt="Preview">
+      </div>
+
+      <!-- Camera Controls -->
+      <div class="camera-controls">
+        <button id="snap-btn" class="submit-btn" onclick="snapPhoto()">📸 Kumuha ng Picture</button>
+        <button id="retake-btn" class="filter-btn" style="display:none; margin: 0 auto 10px;" onclick="retakePhoto()">🔄 Ulitin</button>
+      </div>
+
+      <!-- Camera Details Form -->
+      <div id="camera-details" style="display:none; flex-direction: column; gap: 10px;">
+        <input type="text" id="cam-title" placeholder="Title (hal. Quick Selfie)">
+        <input type="text" id="cam-desc" placeholder="Short story or description of the picture">
+        
+        <div class="select-wrapper">
+          <select id="cam-category">
+            <option value="outings">🚗 Outings</option>
+            <option value="hangouts">☕ Hangouts</option>
+            <option value="school">🎓 School</option>
+          </select>
+        </div>
+
+        <button id="save-cam-btn" class="submit-btn" onclick="uploadCapturedPhoto()">I-save sa Album</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal (Full Screen Viewer) -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <span class="close-btn" onclick="closeLightboxForce()">&times;</span>
+    <button class="nav-btn prev-btn" onclick="changeImage(-1)"></button>
+    <img id="lightbox-img" src="" alt="Enlarged photo">
+    <button class="nav-btn next-btn" onclick="changeImage(1)"></button>
+    <div id="lightbox-caption" class="caption"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
