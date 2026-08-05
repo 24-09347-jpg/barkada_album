@@ -312,26 +312,46 @@ async function uploadCapturedPhoto() {
     saveBtn.disabled = false;
   }
 }
-
-// Kunin ang Download Button mula sa HTML
 const downloadBtn = document.getElementById('downloadBtn');
 
-// Kapag pinindot ang Download button...
-downloadBtn.addEventListener('click', function() {
-    // Kuhanin ang source (link) ng kasalukuyang picture na nakabukas
-    // PAALALA: Palitan ang 'lightboxImage' ng totoong ID ng image tag sa modal mo
-    const currentImageUrl = document.getElementById('Enlarged photo').src; 
+if (downloadBtn) {
+  downloadBtn.addEventListener('click', async function() {
+    // ⚠️ MAHALAGA: Palitan ang 'lightboxImage' sa ibaba 
+    // kung iba ang ID ng pinalaking picture sa HTML mo (hal. 'enlargedPhoto')
+    const imgElement = document.getElementById('lightboxImage'); 
 
-    if (currentImageUrl) {
-        // Cloudinary Trick: Magdadagdag tayo ng 'fl_attachment' sa URL para piliting i-download ng browser
-        const downloadUrl = currentImageUrl.replace('/upload/', '/upload/fl_attachment/');
-        
-        // I-trigger ang download
-        const tempLink = document.createElement('a');
-        tempLink.href = downloadUrl;
-        tempLink.setAttribute('download', 'Barkada-Memory.jpg'); // Pangalan ng file pag na-download
-        document.body.appendChild(tempLink);
-        tempLink.click();
-        document.body.removeChild(tempLink);
+    if (!imgElement || !imgElement.src) {
+      alert('Walang larawang mahanap!');
+      return;
     }
-});
+
+    try {
+      // Magpalit ng text para alam ng user na nagse-save na
+      downloadBtn.innerText = '⌛ Dinadownload...';
+      downloadBtn.disabled = true;
+
+      // Kuhanin ang mismong image file
+      const response = await fetch(imgElement.src);
+      const blob = await response.blob();
+
+      // Gumawa ng temporary link para idownload ang file
+      const blobUrl = URL.createObjectURL(blob);
+      const tempLink = document.createElement('a');
+      tempLink.href = blobUrl;
+      tempLink.download = `Barkada-Memory-${Date.now()}.jpg`;
+      
+      document.body.appendChild(tempLink);
+      tempLink.click();
+
+      // Linisin ang temporary link
+      document.body.removeChild(tempLink);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      // Fallback: Kung i-block ng browser, bubuksan sa bagong window para ma-long press/save
+      window.open(imgElement.src, '_blank');
+    } finally {
+      downloadBtn.innerText = 'Download';
+      downloadBtn.disabled = false;
+    }
+  });
+}
