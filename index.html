@@ -117,6 +117,10 @@
 
   <!-- Lightbox Modal (Full Screen Viewer) -->
   <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <!-- Idagdag ang button na ito sa loob ng lightbox/modal container mo -->
+<button id="downloadBtn" style="padding: 10px 15px; background-color: #2ec4b6; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+  ⬇️ I-download
+</button>
     <span class="close-btn" onclick="closeLightboxForce()">&times;</span>
     <button class="nav-btn prev-btn" onclick="changeImage(-1)"></button>
     <img id="lightbox-img" src="" alt="Enlarged photo">
