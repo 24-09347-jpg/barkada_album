@@ -312,3 +312,26 @@ async function uploadCapturedPhoto() {
     saveBtn.disabled = false;
   }
 }
+
+// Kunin ang Download Button mula sa HTML
+const downloadBtn = document.getElementById('downloadBtn');
+
+// Kapag pinindot ang Download button...
+downloadBtn.addEventListener('click', function() {
+    // Kuhanin ang source (link) ng kasalukuyang picture na nakabukas
+    // PAALALA: Palitan ang 'lightboxImage' ng totoong ID ng image tag sa modal mo
+    const currentImageUrl = document.getElementById('Enlarged photo').src; 
+
+    if (currentImageUrl) {
+        // Cloudinary Trick: Magdadagdag tayo ng 'fl_attachment' sa URL para piliting i-download ng browser
+        const downloadUrl = currentImageUrl.replace('/upload/', '/upload/fl_attachment/');
+        
+        // I-trigger ang download
+        const tempLink = document.createElement('a');
+        tempLink.href = downloadUrl;
+        tempLink.setAttribute('download', 'Barkada-Memory.jpg'); // Pangalan ng file pag na-download
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+    }
+});
