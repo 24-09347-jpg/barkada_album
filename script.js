@@ -318,7 +318,7 @@ if (downloadBtn) {
   downloadBtn.addEventListener('click', async function() {
     // ⚠️ MAHALAGA: Palitan ang 'lightboxImage' sa ibaba 
     // kung iba ang ID ng pinalaking picture sa HTML mo (hal. 'enlargedPhoto')
-    const imgElement = document.getElementById('lightboxImage'); 
+    const imgElement = document.getElementById('Enlarged photo'); 
 
     if (!imgElement || !imgElement.src) {
       alert('Walang larawang mahanap!');
